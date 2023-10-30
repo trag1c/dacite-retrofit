@@ -1,9 +1,9 @@
 import re
 import sys
+import typing  # it's there on purpose
 from dataclasses import is_dataclass
 from itertools import zip_longest
 from types import ModuleType
-from typing import Union  # it's there on purpose
 from typing import (  # type: ignore[attr-defined]
     Any,
     Collection,
@@ -54,16 +54,6 @@ from dacite.types import (
 T = TypeVar("T")
 
 
-def _eval_ann(ann: str) -> Any:
-    return eval(
-        re.sub(
-            r"typing\.(Union|Optional)",
-            r"\1",
-            transform_annotation(ann),
-        )
-    )
-
-
 def resolve_annotations(obj, globalns=None, localns=None):
     # Based on typing.get_type_hints
 
@@ -84,7 +74,7 @@ def resolve_annotations(obj, globalns=None, localns=None):
                     value = type(None)
                 if isinstance(value, str):
                     try:
-                        value = _eval_ann(value)
+                        value = eval(transform_annotation(value))
                     except NameError:
                         value = ForwardRef(value)
                 value = _eval_type(value, base_globals, localns)
@@ -118,7 +108,7 @@ def resolve_annotations(obj, globalns=None, localns=None):
             value = type(None)
         if isinstance(value, str):
             try:
-                value = _eval_ann(value)
+                value = eval(transform_annotation(value))
             except NameError:
                 value = ForwardRef(value)
         value = _eval_type(value, globalns, localns)
