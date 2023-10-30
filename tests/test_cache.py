@@ -1,6 +1,6 @@
 from unittest.mock import Mock, call
 
-from dacite.cache import set_cache_size, get_cache_size, cache
+from dacite.cache import cache, get_cache_size, set_cache_size
 
 
 def test_cache_size():

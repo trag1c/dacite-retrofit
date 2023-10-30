@@ -1,9 +1,9 @@
 from dataclasses import dataclass, field
-from typing import Any, NewType, Optional, List
+from typing import Any, List, NewType, Optional
 
 import pytest
 
-from dacite import from_dict, MissingValueError, WrongTypeError
+from dacite import MissingValueError, WrongTypeError, from_dict
 
 
 def test_from_dict_with_correct_data():

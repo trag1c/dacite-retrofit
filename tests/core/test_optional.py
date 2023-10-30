@@ -1,9 +1,9 @@
 from dataclasses import dataclass
-from typing import Optional, Union, List, NewType
+from typing import List, NewType, Optional, Union
 
 import pytest
 
-from dacite import from_dict, MissingValueError, WrongTypeError
+from dacite import MissingValueError, WrongTypeError, from_dict
 
 
 def test_from_dict_with_missing_optional_value():

@@ -1,15 +1,6 @@
 from dataclasses import InitVar
-from typing import (
-    Type,
-    Any,
-    Optional,
-    Union,
-    Collection,
-    TypeVar,
-    Mapping,
-    Tuple,
-    cast as typing_cast,
-)
+from typing import Any, Collection, Mapping, Optional, Tuple, Type, TypeVar, Union
+from typing import cast as typing_cast
 
 from dacite.cache import cache
 

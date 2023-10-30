@@ -1,9 +1,9 @@
 from dataclasses import dataclass
-from typing import Optional, List, Union, Dict
+from typing import Dict, List, Optional, Union
 
 import pytest
 
-from dacite import from_dict, UnionMatchError
+from dacite import UnionMatchError, from_dict
 
 
 def test_from_dict_with_union_of_builtin_types():

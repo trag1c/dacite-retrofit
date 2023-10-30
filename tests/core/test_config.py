@@ -1,15 +1,15 @@
 from dataclasses import dataclass
 from enum import Enum
-from typing import Optional, List, Union
+from typing import List, Optional, Union
 
 import pytest
 
 from dacite import (
-    from_dict,
     Config,
     ForwardReferenceError,
-    UnexpectedDataError,
     StrictUnionMatchError,
+    UnexpectedDataError,
+    from_dict,
 )
 
 

@@ -1,11 +1,11 @@
-from dataclasses import dataclass, fields, field
+from dataclasses import dataclass, field, fields
 from typing import Optional
 
 import pytest
 
 from dacite.dataclasses import (
-    get_default_value_for_field,
     DefaultValueNotFoundError,
+    get_default_value_for_field,
     is_frozen,
 )
 

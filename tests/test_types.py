@@ -1,41 +1,41 @@
 from dataclasses import InitVar
 from typing import (
-    Optional,
-    Union,
-    List,
     Any,
-    Dict,
-    NewType,
-    TypeVar,
-    Generic,
     Collection,
+    Dict,
+    Generic,
+    List,
+    NewType,
+    Optional,
     Tuple,
     Type,
+    TypeVar,
+    Union,
 )
-from unittest.mock import patch, Mock
+from unittest.mock import Mock, patch
 
 import pytest
 
 from dacite.types import (
-    is_optional,
-    extract_optional,
-    is_generic,
-    is_union,
-    is_generic_collection,
-    extract_origin_collection,
-    is_instance,
     extract_generic,
-    is_new_type,
-    extract_new_type,
-    is_literal,
-    is_init_var,
     extract_init_var,
-    is_type_generic,
+    extract_new_type,
+    extract_optional,
+    extract_origin_collection,
+    is_generic,
+    is_generic_collection,
+    is_init_var,
+    is_instance,
+    is_literal,
+    is_new_type,
+    is_optional,
     is_tuple,
+    is_type_generic,
+    is_union,
 )
 from tests.common import (
-    literal_support,
     init_var_type_support,
+    literal_support,
     pep_604_support,
     type_hints_with_generic_collections_support,
 )

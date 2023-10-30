@@ -1,9 +1,9 @@
 from dataclasses import dataclass
-from typing import List, Set, Union, Dict, Collection, Tuple, Sequence
+from typing import Collection, Dict, List, Sequence, Set, Tuple, Union
 
 import pytest
 
-from dacite import from_dict, WrongTypeError, Config
+from dacite import Config, WrongTypeError, from_dict
 
 
 def test_from_dict_with_generic_collection():

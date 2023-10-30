@@ -3,6 +3,7 @@ import sys
 from dataclasses import is_dataclass
 from itertools import zip_longest
 from types import ModuleType
+from typing import Union  # it's there on purpose
 from typing import (  # type: ignore[attr-defined]
     Any,
     Collection,
@@ -12,7 +13,6 @@ from typing import (  # type: ignore[attr-defined]
     Optional,
     Type,
     TypeVar,
-    Union,  # it's there on purpose
     _allowed_types,
     _eval_type,
     _get_defaults,
