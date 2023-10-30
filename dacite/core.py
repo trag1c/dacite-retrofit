@@ -1,39 +1,131 @@
+import re
+import sys
 from dataclasses import is_dataclass
 from itertools import zip_longest
-from typing import TypeVar, Type, Optional, get_type_hints, Mapping, Any, Collection, MutableMapping
+from types import ModuleType
+from typing import (  # type: ignore[attr-defined]
+    Any,
+    Collection,
+    ForwardRef,
+    Mapping,
+    MutableMapping,
+    Optional,
+    Type,
+    TypeVar,
+    Union,  # it's there on purpose
+    _allowed_types,
+    _eval_type,
+    _get_defaults,
+)
+
+from future_typing import transform_annotation
 
 from dacite.cache import cache
 from dacite.config import Config
 from dacite.data import Data
 from dacite.dataclasses import (
-    get_default_value_for_field,
     DefaultValueNotFoundError,
+    get_default_value_for_field,
     get_fields,
     is_frozen,
 )
 from dacite.exceptions import (
-    ForwardReferenceError,
-    WrongTypeError,
     DaciteError,
-    UnionMatchError,
-    MissingValueError,
     DaciteFieldError,
-    UnexpectedDataError,
+    ForwardReferenceError,
+    MissingValueError,
     StrictUnionMatchError,
+    UnexpectedDataError,
+    UnionMatchError,
+    WrongTypeError,
 )
 from dacite.types import (
-    is_instance,
-    is_generic_collection,
-    is_union,
     extract_generic,
-    is_optional,
-    extract_origin_collection,
-    is_init_var,
     extract_init_var,
+    extract_origin_collection,
+    is_generic_collection,
+    is_init_var,
+    is_instance,
+    is_optional,
     is_subclass,
+    is_union,
 )
 
 T = TypeVar("T")
+
+
+def _eval_ann(ann: str) -> Any:
+    return eval(
+        re.sub(
+            r"typing\.(Union|Optional)",
+            r"\1",
+            transform_annotation(ann),
+        )
+    )
+
+
+def resolve_annotations(obj, globalns=None, localns=None):
+    # Based on typing.get_type_hints
+
+    if getattr(obj, "__no_type_check__", None):
+        return {}
+    # Classes require a special treatment.
+    if isinstance(obj, type):
+        hints = {}
+        for base in reversed(obj.__mro__):
+            if globalns is None:
+                base_globals = sys.modules[base.__module__].__dict__
+            else:
+                base_globals = globalns
+            ann = base.__dict__.get("__annotations__", {})
+            for name, val in ann.items():
+                value = val
+                if value is None:
+                    value = type(None)
+                if isinstance(value, str):
+                    try:
+                        value = _eval_ann(value)
+                    except NameError:
+                        value = ForwardRef(value)
+                value = _eval_type(value, base_globals, localns)
+                hints[name] = value
+        return hints
+
+    if globalns is None:
+        if isinstance(obj, ModuleType):
+            globalns = obj.__dict__
+        else:
+            nsobj = obj
+            # Find globalns for the unwrapped object.
+            while hasattr(nsobj, "__wrapped__"):
+                nsobj = nsobj.__wrapped__
+            globalns = getattr(nsobj, "__globals__", {})
+        if localns is None:
+            localns = globalns
+    elif localns is None:
+        localns = globalns
+    hints = getattr(obj, "__annotations__", None)
+    if hints is None:
+        # Return empty annotations for something that _could_ have them.
+        if isinstance(obj, _allowed_types):
+            return {}
+        raise TypeError(f"{obj!r} is not a module, class, method, or function.")
+    defaults = _get_defaults(obj)
+    hints = dict(hints)
+    for name, val in hints.items():
+        value = val
+        if value is None:
+            value = type(None)
+        if isinstance(value, str):
+            try:
+                value = _eval_ann(value)
+            except NameError:
+                value = ForwardRef(value)
+        value = _eval_type(value, globalns, localns)
+        if name in defaults and defaults[name] is None:
+            value = Optional[value]
+        hints[name] = value
+    return hints
 
 
 def from_dict(data_class: Type[T], data: Data, config: Optional[Config] = None) -> T:
@@ -48,7 +140,9 @@ def from_dict(data_class: Type[T], data: Data, config: Optional[Config] = None) 
     post_init_values: MutableMapping[str, Any] = {}
     config = config or Config()
     try:
-        data_class_hints = cache(get_type_hints)(data_class, localns=config.hashable_forward_references)
+        data_class_hints = cache(resolve_annotations)(
+            data_class, localns=config.hashable_forward_references
+        )
     except NameError as error:
         raise ForwardReferenceError(str(error))
     data_class_fields = cache(get_fields)(data_class)
