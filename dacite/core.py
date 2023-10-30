@@ -160,7 +160,9 @@ def from_dict(data_class: Type[T], data: Data, config: Optional[Config] = None) 
                 error.update_path(field.name)
                 raise
             if config.check_types and not is_instance(value, field_type):
-                raise WrongTypeError(field_path=field.name, field_type=field_type, value=value)
+                raise WrongTypeError(
+                    field_path=field.name, field_type=field_type, value=value
+                )
         else:
             try:
                 value = get_default_value_for_field(field, field_type)
@@ -232,17 +234,25 @@ def _build_value_for_collection(collection: Type, data: Any, config: Config) -> 
     data_type = data.__class__
     if isinstance(data, Mapping) and is_subclass(collection, Mapping):
         item_type = extract_generic(collection, defaults=(Any, Any))[1]
-        return data_type((key, _build_value(type_=item_type, data=value, config=config)) for key, value in data.items())
+        return data_type(
+            (key, _build_value(type_=item_type, data=value, config=config))
+            for key, value in data.items()
+        )
     elif isinstance(data, tuple) and is_subclass(collection, tuple):
         if not data:
             return data_type()
         types = extract_generic(collection)
         if len(types) == 2 and types[1] == Ellipsis:
-            return data_type(_build_value(type_=types[0], data=item, config=config) for item in data)
+            return data_type(
+                _build_value(type_=types[0], data=item, config=config) for item in data
+            )
         return data_type(
-            _build_value(type_=type_, data=item, config=config) for item, type_ in zip_longest(data, types)
+            _build_value(type_=type_, data=item, config=config)
+            for item, type_ in zip_longest(data, types)
         )
     elif isinstance(data, Collection) and is_subclass(collection, Collection):
         item_type = extract_generic(collection, defaults=(Any,))[0]
-        return data_type(_build_value(type_=item_type, data=item, config=config) for item in data)
+        return data_type(
+            _build_value(type_=item_type, data=item, config=config) for item in data
+        )
     return data

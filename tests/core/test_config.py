@@ -146,7 +146,10 @@ def test_from_dict_with_missing_forward_reference():
     with pytest.raises(ForwardReferenceError) as exception_info:
         from_dict(X, {"y": {"s": "text"}})
 
-    assert str(exception_info.value) == "can not resolve forward reference: name 'Y' is not defined"
+    assert (
+        str(exception_info.value)
+        == "can not resolve forward reference: name 'Y' is not defined"
+    )
 
 
 def test_form_dict_with_disabled_type_checking():
@@ -202,7 +205,10 @@ def test_from_dict_with_strict_unions_match_and_ambiguous_match():
     with pytest.raises(StrictUnionMatchError) as exception_info:
         from_dict(Z, data, Config(strict_unions_match=True))
 
-    assert str(exception_info.value) == 'can not choose between possible Union matches for field "u": X, Y'
+    assert (
+        str(exception_info.value)
+        == 'can not choose between possible Union matches for field "u": X, Y'
+    )
 
 
 def test_from_dict_with_strict_unions_match_and_single_match():
