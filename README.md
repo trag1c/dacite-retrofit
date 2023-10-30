@@ -8,12 +8,12 @@ support in Python 3.8+. See the original project for documentation.
 
 `dacite-retrofit` is available on PyPI:
 ```console
-$ pip install dacite-retrofit
+pip install dacite-retrofit
 ```
 
 It can also be installed from source:
 ```console
-$ pip install git+https://github.com/trag1c/dacite-retrofit.git
+pip install git+https://github.com/trag1c/dacite-retrofit.git
 ```
 
 > **Warning**
@@ -22,7 +22,7 @@ $ pip install git+https://github.com/trag1c/dacite-retrofit.git
 
 ## Development
 This fork uses `poetry`, `black`, `mypy` and `isort`:
-```bash
+```console
 $ poetry run black .
 $ poetry run mypy dacite
 $ poetry run isort .
