@@ -12,12 +12,12 @@ def cache(function: T) -> T:
 
 
 def set_cache_size(size: Optional[int]) -> None:
-    global __MAX_SIZE  # pylint: disable=global-statement
+    global __MAX_SIZE
     __MAX_SIZE = size
 
 
 def get_cache_size() -> Optional[int]:
-    global __MAX_SIZE  # pylint: disable=global-variable-not-assigned
+    global __MAX_SIZE
     return __MAX_SIZE
 
 

@@ -114,10 +114,9 @@ def _build_value_for_union(union: Type, data: Any, config: Config) -> Any:
     union_matches = {}
     for inner_type in types:
         try:
-            # noinspection PyBroadException
             try:
                 value = _build_value(type_=inner_type, data=data, config=config)
-            except Exception:  # pylint: disable=broad-except
+            except Exception:
                 continue
             if is_instance(value, inner_type):
                 if config.strict_unions_match:
