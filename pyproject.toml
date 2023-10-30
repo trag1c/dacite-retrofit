@@ -1,5 +1,62 @@
-[tool.black]
-    line-length = 120
+[tool.poetry]
+name = "dacite-retrofit"
+version = "1.0.0"
+description = "A dacite fork with support for PEP 585/604 typehints in 3.8+."
+authors = ["trag1c <trag1cdev@yahoo.com>"]
+license = "MIT"
+readme = "README.md"
 
-[tool.pytest.ini_options]
-    addopts = "--benchmark-autosave --benchmark-json=benchmark.json"
+[tool.poetry.dependencies]
+python = "^3.8"
+future-typing = "^0.4.1"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.4.3"
+pytest-cov = "^4.1.0"
+coveralls = "^3.3.1"
+mypy = "^1.6.1"
+black = "^23.10.1"
+isort = "^5.12.0"
+
+[tool.ruff]
+target-version = "py38"
+select = [
+    "A",
+    "ANN",
+    "ARG",
+    "B",
+    "BLE",
+    "E",
+    "ERA",
+    "F",
+    "FBT",
+    "I",
+    "ISC",
+    "N",
+    "PIE",
+    "Q",
+    "RET",
+    "RSE",
+    "RUF",
+    "SIM",
+    "SLF",
+    "TCH",
+    "TRY",
+    "UP",
+    "W",
+]
+ignore = [
+    "ANN101",
+    "ANN102",
+    "ANN401",
+    "RUF001",
+    "RUF002",
+    "RUF003",
+    "TRY003",
+    "PLW2901",
+]
+exclude = ["tests"]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
