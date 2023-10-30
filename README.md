@@ -7,12 +7,12 @@ support in Python 3.8+. See the original project for documentation.
 ## Installation
 
 `dacite-retrofit` is available on PyPI:
-```console
+```
 pip install dacite-retrofit
 ```
 
 It can also be installed from source:
-```console
+```
 pip install git+https://github.com/trag1c/dacite-retrofit.git
 ```
 
