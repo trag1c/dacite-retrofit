@@ -20,6 +20,10 @@ pip install git+https://github.com/trag1c/dacite-retrofit.git
 > Unlike `dacite` (which supports Python 3.6+), `dacite-retrofit` only supports
 > Python 3.8+.
 
+> **Note**
+> If you are still using Python version older than 3.8, something in your life needs urgent reconsideration.<br />
+> Maybe it's time to move on?
+
 ## Development
 This fork uses `poetry`, `black`, `mypy` and `isort`:
 ```console
