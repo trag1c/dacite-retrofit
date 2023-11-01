@@ -21,10 +21,11 @@ pip install git+https://github.com/trag1c/dacite-retrofit.git
 > Python 3.8+.
 
 ## Development
-This fork uses `poetry`, `black`, `mypy` and `isort`:
+This fork uses `poetry`, `black`, `mypy`, `pytest` and `isort`:
 ```console
 $ poetry run black .
 $ poetry run mypy dacite
+$ poetry run pytest --cov dacite
 $ poetry run isort .
 ```
 
