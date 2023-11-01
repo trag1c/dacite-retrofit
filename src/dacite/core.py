@@ -1,6 +1,5 @@
-import re
 import sys
-import typing  # it's there on purpose
+import typing  # noqa: F401, it's there on purpose
 from dataclasses import is_dataclass
 from itertools import zip_longest
 from types import ModuleType
@@ -15,7 +14,6 @@ from typing import (  # type: ignore[attr-defined]
     TypeVar,
     _allowed_types,
     _eval_type,
-    _get_defaults,
 )
 
 from future_typing import transform_annotation
@@ -50,6 +48,24 @@ from dacite.types import (
     is_subclass,
     is_union,
 )
+
+if sys.version_info < (3, 11):
+    from typing import _get_defaults  # type: ignore[attr-defined]
+else:
+
+    def _get_defaults(func):
+        try:
+            code = func.__code__
+        except AttributeError:
+            return {}
+        arg_names = code.co_varnames[: (pos_count := code.co_argcount)]
+        res = func.__kwdefaults__.copy()
+        pos_offset = pos_count - len(defaults := func.__defaults__ or ())
+        for name, value in zip(arg_names[pos_offset:], defaults):
+            assert name not in res
+            res[name] = value
+        return res
+
 
 T = TypeVar("T")
 
