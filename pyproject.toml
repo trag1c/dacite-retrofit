@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "dacite-retrofit"
-version = "1.0.0"
+version = "1.0.1"
 description = "A dacite fork with support for PEP 585/604 typehints in 3.8+."
 authors = ["trag1c <trag1cdev@yahoo.com>"]
 license = "MIT"
