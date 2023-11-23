@@ -16,7 +16,7 @@ It can also be installed from source:
 pip install git+https://github.com/trag1c/dacite-retrofit.git
 ```
 
-> **Warning**
+> [!Warning]
 > Unlike `dacite` (which supports Python 3.6+), `dacite-retrofit` only supports
 > Python 3.8+.
 
